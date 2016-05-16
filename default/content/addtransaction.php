@@ -1,0 +1,36 @@
+<?php
+
+
+if(isset($_POST['datum'], $_POST['recv'])){
+	  $dbh = new PDO("mysql:host=localhost;dbname=moneysaver", "root", "server");
+	 
+
+	 
+		$stmt = $dbh->prepare("INSERT INTO transaction (datum, recv, inflow, outflow, zweck, account, user) VALUES (:datum, :recv, :inflow, :outflow, :zweck, :account, :user) ");
+	   $stmt->bindParam(':datum', $_POST["datum"]);
+		$stmt->bindParam(':recv', $_POST["recv"]);
+		$stmt->bindParam(':inflow', $_POST["inflow"]);
+		$stmt->bindParam(':outflow', $_POST["outflow"]);
+	   $stmt->bindParam(':zweck', $_POST["zweck"]);
+	   $stmt->bindParam(':account', $_POST["account"]);
+	   $stmt->bindParam(':user', $_SESSION["id"]);
+		$stmt->execute();
+		header('Location: ?page=transactions&account=' . $_POST['account']);
+	}
+	
+	
+?>
+
+	<form action="?page=addtransaction" method="POST" class="form-inline">
+  <div class="form-group">
+    <label for="name">Transaktion</label>
+    <input id="datum" name="datum" type="date" style="width:123px;"class="form-control"  placeholder="Date">
+    <input id="Empfänger" name="recv" style="width:123px;"type="text" class="form-control" placeholder="Empfaenger">
+    <input id="Einzahlung" name="inflow" style="width:123px;"type="text" class="form-control" placeholder="Einzahlung">
+    <input id="Auszahlung" name="outflow" style="width:123px;" type="text" class="form-control" placeholder="Auszahlung">
+    <input id="Zweck" name="zweck" style="width:123px;" type="text" class="form-control" placeholder="Zweck">
+    <input type="hidden" name="account" value="<?= $_GET['account'] ?>">
+    <button type="submit" class="btn btn-default">Hinzufuegen</button>
+    </form>
+    </div>
+   

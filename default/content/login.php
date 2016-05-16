@@ -1,0 +1,41 @@
+<?php
+
+if(isset($_POST["username"], $_POST["password"])) {
+ $dbh = new PDO("mysql:host=localhost;dbname=moneysaver", "root", "server");
+ $stmt = $dbh->prepare("SELECT * FROM users WHERE username=:username AND password=:password");
+ $stmt->bindParam(':username', $_POST["username"]);
+ $stmt->bindParam(':password', $_POST["password"]);
+
+ $stmt->execute();
+ $row = $stmt->fetch(PDO::FETCH_ASSOC);
+ if($row){
+	$sid = session_id();
+   $_SESSION['id'] = $row['ID'];
+   echo "<p>Session-ID: $sid</p>";
+   echo "<p>user-ID: $row[ID]</p>";
+	header ( 'Location: ?page=dashboard' );
+	echo "erfolgreich eingelogt";
+	$stmt = $dbh->prepare("UPDATE `users` SET `user` = CONCAT(:user) WHERE username=:username");
+
+
+	 $stmt->bindParam(':user', $_SESSION["id"]);
+	$stmt->execute();
+	
+	} else {
+		echo "fail";
+	}
+}
+?>
+
+<form action="?page=login" method="POST" class="form-inline">
+  <div class="form-group">
+    <label for="username">Benutzername</label>
+    <input name="username" type="text" class="form-control" id="username" placeholder="Benutzername">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input name="password" type="password" class="form-control" id="password" placeholder="Passwort">
+  </div>
+  <button type="submit" class="btn btn-default">Log in</button>
+    						<li><a href="?page=register">Account erstellen</a></li>
+</form>

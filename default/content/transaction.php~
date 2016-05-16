@@ -1,0 +1,30 @@
+<?php
+
+
+if(isset($_POST['datum'], $_POST['recv'])){
+	  $dbh = new PDO("mysql:host=localhost;dbname=moneysaver", "root", "server");
+	 
+		$stmt = $dbh->prepare("INSERT INTO transaction (datum, recv, inflow, outflow) VALUES (:datum, :recv, :inflow, :outflow)");
+	   $stmt->bindParam(':datum', $_POST["datum"]);
+		$stmt->bindParam(':recv', $_POST["recv"]);
+		$stmt->bindParam(':inflow', $_POST["inflow"]);
+		$stmt->bindParam(':outflow', $_POST["outflow"]);
+	
+		$stmt->execute();
+		header('Location: ?page=transaction');
+	}
+	
+	
+?>
+
+	<form action="?page=transaction" method="POST" class="form-inline">
+  <div class="form-group">
+    <label for="name">Transaktion</label>
+    <input id="datum" name="datum" type="date" style="width:123px;"class="form-control"  placeholder="Date">
+    <input id="Empfänger" name="recv" style="width:123px;"type="text" class="form-control" placeholder="Empfänger">
+    <input id="Einzahlung" name="inflow" style="width:123px;"type="text" class="form-control" placeholder="Einzahlung">
+    <input id="Auszahlung" name="outflow" style="width:123px;" type="text" class="form-control" placeholder="Auszahlung">
+    <button type="submit" class="btn btn-default">Hinzufügen</button>
+    </form>
+    </div>
+   

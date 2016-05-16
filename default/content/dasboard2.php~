@@ -1,0 +1,25 @@
+<?php
+	
+	$dbh = new PDO("mysql:host=localhost;dbname=moneysaver", "root", "server");
+	 $stmt = $dbh->prepare("SELECT
+  SUM(inflow) AS inflow,
+  SUM(outflow) AS outflow,
+  SUM(guthaben) AS guthaben
+FROM accounts, transaction
+WHERE user=:userid 
+");
+	 $stmt->bindParam(':userid', $_SESSION["id"]);
+	 $stmt->execute();
+   
+	 foreach($stmt->fetchAll() as $row){
+	 	
+	$guthaben = $row['guthaben'];
+	$inflow = $row['inflow'];
+	$outflow = $row['outflow'];
+	 
+	echo "guthaben $guthaben";
+	echo "inflow $inflow";
+	echo "outflow $outflow"; 
+	 $stand = $guthaben + $inflow - $outflow;
+	echo "Stand: $stand</br>";
+}

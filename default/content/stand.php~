@@ -1,0 +1,26 @@
+	 <?php
+	
+	function stand(){
+	
+	$dbh = new PDO("mysql:host=localhost;dbname=moneysaver", "root", "server");
+	$stmt = $dbh->prepare(" SELECT accounts.user, SUM(accounts.guthaben) FROM accounts INNER JOIN users ON accounts.user = users.ID;");
+");
+
+	$stmt->execute();
+	
+foreach($stmt->fetchAll() as $row){
+	 	
+	 		echo  $row['summe'] ;
+	 	   
+	 		
+	 		
+	 	}
+
+
+
+				echo $otto = $_GET['stand']; 
+
+
+}
+?>
+	
